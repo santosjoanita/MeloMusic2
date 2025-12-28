@@ -1,17 +1,20 @@
 const mysql = require('mysql2');
-const dbConfig = require('../config/db.config.js');
+require('dotenv').config(); 
 
+// Configuração da ligação usando os dados do .env
 const pool = mysql.createPool({
-    host: dbConfig.HOST,
-    user: dbConfig.USER,
-    password: dbConfig.PASSWORD,
-    database: dbConfig.DB,
+    host: process.env.DB_HOST,        
+    user: process.env.DB_USER,         
+    password: process.env.DB_PASSWORD, 
+    database: process.env.DB_NAME,     
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
 
+// Converter para Promises
 const promisePool = pool.promise();
-console.log(`[DB] Ligado à Cloud: ${dbConfig.DB}`);
+
+console.log(`[DB] A ligar à base de dados na Cloud: ${process.env.DB_NAME}...`);
 
 module.exports = promisePool;
