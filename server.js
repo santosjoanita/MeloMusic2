@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+
 // --- Iniciar Servidor ---
 app.listen(PORT, () => {
     console.log(`Servidor a correr em http://localhost:${PORT}`);

@@ -1,63 +1,43 @@
-const db = require('./db'); 
+const db = require('./db');
 
 
-// Buscar todas as músicas (com os nomes de Artista e Álbum)
+
+// 1. Listar tudo
 exports.findAll = async () => {
-    const query = `
-        SELECT 
-            songs.id, 
-            songs.title, 
-            artists.name AS artist,
-            albums.title AS album
-        FROM songs 
-        LEFT JOIN albums ON songs.album_id = albums.id 
-        LEFT JOIN artists ON albums.artist_id = artists.id
-    `;
+    const query = 'SELECT id, title, artist, album, cover_url FROM songs';
     const [rows] = await db.query(query);
     return rows;
 };
 
-// Buscar música por ID
+// 2. Buscar por ID
 exports.findById = async (id) => {
     const [rows] = await db.query('SELECT * FROM songs WHERE id = ?', [id]);
     return rows[0];
 };
 
-// Sistema CRUD para artistas e álbuns
-
-exports.findArtistByName = async (name) => {
-    const [rows] = await db.query('SELECT id FROM artists WHERE name = ?', [name]);
-    return rows[0];
-};
-
-exports.createArtist = async (name) => {
-    const [result] = await db.query('INSERT INTO artists (name, bio) VALUES (?, ?)', [name, 'Artista criado via API']);
+// 3. Criar Música
+exports.createSong = async (title, artist, album) => {
+    // Inserimos os nomes diretamente como TEXTO
+    const query = 'INSERT INTO songs (title, artist, album) VALUES (?, ?, ?)';
+    
+    // Nota: Se a tua base de dados exigir 'genre_id', pode dar erro aqui. 
+    // Mas vamos tentar assim primeiro, que é o padrão.
+    const [result] = await db.query(query, [title, artist, album]);
     return result.insertId;
 };
 
-exports.findAlbum = async (artistId, title) => {
-    const [rows] = await db.query('SELECT id FROM albums WHERE artist_id = ? AND title = ?', [artistId, title]);
-    return rows[0];
-};
-
-exports.createAlbum = async (artistId, title) => {
-    const [result] = await db.query('INSERT INTO albums (artist_id, title, release_year) VALUES (?, ?, ?)', [artistId, title, new Date().getFullYear()]);
-    return result.insertId;
-};
-
-// sistema CRUD das músicas
-
-exports.createSong = async (title, albumId) => {
-    const [result] = await db.query('INSERT INTO songs (title, album_id) VALUES (?, ?)', [title, albumId]);
-    return result.insertId;
-};
-
-exports.update = async (id, title, albumId) => {
-    const [result] = await db.query('UPDATE songs SET title = ?, album_id = ? WHERE id = ?', [title, albumId, id]);
+// 4. Atualizar
+exports.update = async (id, title, artist, album) => {
+    const query = 'UPDATE songs SET title = ?, artist = ?, album = ? WHERE id = ?';
+    const [result] = await db.query(query, [title, artist, album, id]);
     return result.affectedRows;
 };
 
+// 5. Apagar
 exports.delete = async (id) => {
     const [result] = await db.query('DELETE FROM songs WHERE id = ?', [id]);
     return result.affectedRows;
 };
+
+exports.findArtistByName = async () => null;
+exports.createArtist = async () => null;

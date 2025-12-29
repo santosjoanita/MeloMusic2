@@ -1,130 +1,141 @@
-/* Configuração Geral */
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    max-width: 900px; 
-    margin: 0 auto; 
-    padding: 20px; 
-    background-color: #f4f7f6; 
-    color: #333; 
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-h1 { 
-    text-align: center; 
-    color: #2c3e50; 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
     margin-bottom: 30px;
-}
-
-/* Estilo dos Cartões (Box) */
-.box { 
-    background: white; 
-    padding: 25px; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-    margin-bottom: 30px; 
+    color: #2c3e50;
+    font-size: 2.5rem;
 }
 
 h3 {
-    margin-top: 0;
-    color: #555;
-    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 15px;
+    color: #444;
+    border-bottom: 2px solid #eee;
     padding-bottom: 10px;
+}
+
+/* Estilo das Caixas (Box) */
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
-/* Estilo do Formulário */
-.form-group { 
-    display: flex; 
-    gap: 15px; 
-    margin-bottom: 15px; 
+.list-box {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
 }
 
-input { 
-    flex: 1; 
-    padding: 12px; 
-    border: 1px solid #ddd; 
-    border-radius: 6px; 
-    font-size: 14px; 
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    gap: 15px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
     transition: border-color 0.3s;
 }
 
 input:focus {
     outline: none;
-    border-color: #2ecc71;
+    border-color: #007bff;
 }
 
-button { 
-    padding: 12px 24px; 
-    border: none; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    transition: background 0.2s, transform 0.1s; 
+/* Botão Principal */
+button[type="submit"] {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
-/* Botão Adicionar (Verde) */
-.btn-add { 
-    background-color: #2ecc71; 
-    color: white; 
-    width: 100%;
+button[type="submit"]:hover {
+    background-color: #0056b3;
 }
 
-.btn-add:hover { 
-    background-color: #27ae60; 
+/* Lista de Músicas */
+ul {
+    list-style: none;
 }
 
-/* Estilo da Lista */
-ul { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0;
-}
-
-li { 
-    background: white; 
-    border-bottom: 1px solid #eee; 
-    padding: 15px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    transition: background 0.2s; 
-}
-
-li:hover { 
-    background-color: #fafafa; 
-}
-
-li:first-child { border-top-left-radius: 8px; border-top-right-radius: 8px; }
-li:last-child { border-bottom: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
-
-/* Texto da Música */
-.song-info {
+li {
+    background: white;
+    border-bottom: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.song-info strong { 
-    font-size: 1.1em; 
-    color: #2c3e50; 
+li span {
+    font-size: 1.1rem;
 }
 
-.song-info small { 
-    color: #7f8c8d; 
-    margin-top: 4px; 
+li small {
+    color: #777;
+    font-size: 0.9rem;
 }
 
-/* Botão Apagar (Vermelho) */
-.btn-delete { 
-    background-color: #e74c3c; 
-    color: white; 
-    padding: 8px 15px; 
-    font-size: 0.9em; 
+.loading-msg {
+    text-align: center;
+    background: transparent;
+    box-shadow: none;
+    color: #777;
 }
 
-.btn-delete:hover { 
-    background-color: #c0392b; 
+/* Botões de Ação  */
+li div button {
+    margin-left: 8px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.9rem;
+    transition: opacity 0.3s;
 }
 
-/* Responsivo */
-@media (max-width: 600px) {
-    .form-group { flex-direction: column; gap: 10px; }
+li div button:hover {
+    opacity: 0.8;
 }
+

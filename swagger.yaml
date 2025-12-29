@@ -1,40 +1,85 @@
 openapi: 3.0.0
 info:
   title: MeloMusic API
+  description: API para gestão de músicas (Trabalho Prático Node.js)
   version: 1.0.0
 servers:
-  - url: http://localhost:3000/api
+  - url: http://localhost:3001
+    description: Servidor Local
 paths:
-  /songs:
+  /api/songs:
     get:
-      summary: Listar músicas
+      summary: Listar todas as músicas
       responses:
         200:
-          description: OK
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Song'
     post:
-      summary: Criar música
+      summary: Criar nova música
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                title: 
-                  type: string
-                artist: 
-                  type: string
+              $ref: '#/components/schemas/SongInput'
       responses:
         201:
-          description: Criado
-  /songs/{id}:
+          description: Criado com sucesso
+  /api/songs/{id}:
+    put:
+      summary: Atualizar música
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID da música
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SongInput'
+      responses:
+        200:
+          description: Atualizado com sucesso
     delete:
       summary: Apagar música
       parameters:
         - in: path
           name: id
-          required: true
           schema:
             type: integer
+          required: true
       responses:
         200:
-          description: Apagado
+          description: Apagado com sucesso
+
+components:
+  schemas:
+    Song:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        artist:
+          type: string
+        album:
+          type: string
+    SongInput:
+      type: object
+      properties:
+        title:
+          type: string
+        artist:
+          type: string
+        album:
+          type: string

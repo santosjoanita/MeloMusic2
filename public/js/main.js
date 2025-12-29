@@ -1,108 +1,89 @@
-const API_URL = 'http://localhost:3000/api/songs';
+const API_URL = 'http://localhost:3001/api/songs';
+let editMode = false; 
+let currentId = null; 
 
 
- // FUNÇÃO: Carregar e Mostrar Músicas (GET)
+document.addEventListener('DOMContentLoaded', fetchSongs);
 
+// Lista as músicas
 async function fetchSongs() {
-    const listElement = document.getElementById('songList');
-    
     try {
         const response = await fetch(API_URL);
         const songs = await response.json();
-
-        listElement.innerHTML = ''; // Limpar a lista atual
-
-        if (songs.length === 0) {
-            listElement.innerHTML = '<li style="text-align:center; color:#777;">Nenhuma música encontrada na base de dados.</li>';
-            return;
-        }
+        const list = document.getElementById('music-list');
+        list.innerHTML = '';
 
         songs.forEach(song => {
             const li = document.createElement('li');
             li.innerHTML = `
-                <div class="song-info">
-                    <strong>${song.title}</strong>
-                    <small>${song.artist}</small>
+                <span><strong>${song.title}</strong> - ${song.artist} <small>(${song.album || 'Single'})</small></span>
+                <div>
+                    <button onclick="prepararEdicao(${song.id}, '${song.title}', '${song.artist}', '${song.album}')" style="background-color: orange;">Editar</button>
+                    <button onclick="deleteSong(${song.id})" style="background-color: red;">X</button>
                 </div>
-                <button class="btn-delete" onclick="deleteSong(${song.id})">Apagar</button>
             `;
-            listElement.appendChild(li);
+            list.appendChild(li);
         });
-
     } catch (error) {
-        console.error('Erro ao buscar músicas:', error);
-        listElement.innerHTML = '<li style="color:red; text-align:center;">Erro ao carregar dados da API.</li>';
+        console.error('Erro:', error);
     }
 }
 
+// Cria ou atualiza as músicas
+document.getElementById('music-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
- //FUNÇÃO: Criar Nova Música (POST)
- 
-async function createSong(event) {
-    event.preventDefault(); // Impede a página de recarregar
+    const title = document.getElementById('title').value;
+    const artist = document.getElementById('artist').value;
+    const album = document.getElementById('album').value;
 
-    const titleInput = document.getElementById('title');
-    const artistInput = document.getElementById('artist');
+    const data = { title, artist, album };
 
-    const newSong = {
-        title: titleInput.value,
-        artist: artistInput.value
-    };
-
-    try {
-        const response = await fetch(API_URL, {
+    if (editMode) {
+        // --- MODO EDIÇÃO (PUT) ---
+        await fetch(`${API_URL}/${currentId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        editMode = false;
+        currentId = null;
+        document.querySelector('button[type="submit"]').innerText = 'Adicionar Música';
+        document.querySelector('button[type="submit"]').style.backgroundColor = ''; // Volta à cor original
+    } else {
+        // --- MODO CRIAÇÃO (POST) ---
+        await fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newSong)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
-
-        if (response.ok) {
-            // Limpar campos
-            titleInput.value = '';
-            artistInput.value = '';
-            // Atualizar a lista
-            fetchSongs();
-        } else {
-            alert('Erro ao criar música. Verifica se os campos estão preenchidos.');
-        }
-
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('Erro de conexão com a API.');
     }
-}
 
+    // Limpar formulário e recarregar lista
+    document.getElementById('music-form').reset();
+    fetchSongs();
+});
 
-//  FUNÇÃO: Apagar Música (DELETE)
- 
-async function deleteSong(id) {
-    if (!confirm('Tens a certeza que queres apagar esta música?')) return;
+window.prepararEdicao = (id, title, artist, album) => {
+    document.getElementById('title').value = title;
+    document.getElementById('artist').value = artist;
+    document.getElementById('album').value = (album === 'null' || album === 'undefined') ? '' : album;
 
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: 'DELETE'
-        });
+    // Muda o estado para "Modo Edição"
+    editMode = true;
+    currentId = id;
 
-        if (response.ok) {
-            fetchSongs(); // Recarregar a lista
-        } else {
-            alert('Erro ao apagar música.');
-        }
+    // Muda o botão para o utilizador perceber
+    const btn = document.querySelector('button[type="submit"]');
+    btn.innerText = 'Guardar Alterações';
+    btn.style.backgroundColor = 'orange';
+};
 
-    } catch (error) {
-        console.error('Erro:', error);
+//  Apagar
+window.deleteSong = async (id) => {
+    if (confirm('Tens a certeza?')) {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        fetchSongs();
     }
-}
-
-
-
-// 1. Carregar lista ao abrir a página
-document.addEventListener('DOMContentLoaded', fetchSongs);
-
-// 2. Adicionar evento ao formulário
-const form = document.getElementById('addSongForm');
-if (form) {
-    form.addEventListener('submit', createSong);
-}
+};

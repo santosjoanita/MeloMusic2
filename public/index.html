@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeloMusic API Client</title>
-    
-    
+    <title>MeloMusic API</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <h1>🎵 MeloMusic - API Node.js</h1>
+    <div class="main-container">
+        <h1>🎵 MeloMusic</h1>
 
- 
-    <div class="box">
-        <h3>Adicionar Nova Música</h3>
-        <form id="addSongForm">
-            <div class="form-group">
-                <input type="text" id="title" placeholder="Título da música" required>
-                <input type="text" id="artist" placeholder="Nome do artista" required>
-            </div>
-            <button type="submit" class="btn-add">Guardar Música</button>
-        </form>
+        <div class="box">
+            <h3>Adicionar Nova Música</h3>
+            <form id="music-form">
+                <div class="input-group">
+                    <input type="text" id="title" placeholder="Título" required>
+                    <input type="text" id="artist" placeholder="Artista" required>
+                </div>
+                <input type="text" id="album" placeholder="Álbum (Opcional)">
+                <button type="submit" id="btn-submit">Adicionar Música</button>
+            </form>
+        </div>
+
+        <div class="box list-box">
+            <h3>A tua Biblioteca</h3>
+            <ul id="music-list">
+                <li class="loading-msg">A carregar lista...</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- Secção de Listagem --> <div class="box" style="padding:0; background:transparent; box-shadow:none;">
-        <h3 style="margin-bottom:15px; padding-left:10px; border:none;">A tua Biblioteca</h3>
-        
-        
-        <ul id="songList">
-            <li style="text-align:center; padding:20px; color:#777;">A carregar lista...</li>
-        </ul>
-    </div>
-
-   
     <script src="js/main.js"></script>
 </body>
 </html>
