@@ -28,7 +28,20 @@ async function fetchSongs() {
         console.error('Erro:', error);
     }
 }
+// --- FUNCIONALIDADE EXTRA: PESQUISA ---
+document.getElementById('searchBar').addEventListener('keyup', (e) => {
+    const searchString = e.target.value.toLowerCase();
+    const songs = document.querySelectorAll('#music-list li'); 
 
+    songs.forEach(song => {
+        const text = song.innerText.toLowerCase();
+        if (text.includes(searchString)) {
+            song.style.display = 'flex';
+        } else {
+            song.style.display = 'none';
+        }
+    });
+});
 // Cria ou atualiza as músicas
 document.getElementById('music-form').addEventListener('submit', async (e) => {
     e.preventDefault();

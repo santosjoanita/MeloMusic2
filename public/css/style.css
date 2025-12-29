@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,11 +10,16 @@ body {
     color: #333;
     line-height: 1.6;
     padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .main-container {
     max-width: 800px;
     margin: 0 auto;
+    width: 100%;
+    flex: 1;
 }
 
 h1 {
@@ -32,7 +36,6 @@ h3 {
     padding-bottom: 10px;
 }
 
-/* Estilo das Caixas (Box) */
 .box {
     background: white;
     padding: 25px;
@@ -47,7 +50,6 @@ h3 {
     padding: 0;
 }
 
-/* Formulário */
 form {
     display: flex;
     flex-direction: column;
@@ -73,7 +75,6 @@ input:focus {
     border-color: #007bff;
 }
 
-/* Botão Principal */
 button[type="submit"] {
     padding: 12px;
     background-color: #007bff;
@@ -84,13 +85,13 @@ button[type="submit"] {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
+    width: 100%;
 }
 
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Lista de Músicas */
 ul {
     list-style: none;
 }
@@ -105,10 +106,12 @@ li {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
 }
 
 li span {
     font-size: 1.1rem;
+    margin-bottom: 5px;
 }
 
 li small {
@@ -121,12 +124,16 @@ li small {
     background: transparent;
     box-shadow: none;
     color: #777;
+    justify-content: center;
 }
 
-/* Botões de Ação  */
+li div {
+    display: flex;
+    gap: 5px;
+}
+
 li div button {
-    margin-left: 8px;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -139,3 +146,94 @@ li div button:hover {
     opacity: 0.8;
 }
 
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+}
+
+footer h3 {
+    color: #888;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: none;
+    margin-bottom: 25px;
+}
+
+.authors-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.author-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.author-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.author-info {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .box {
+        padding: 20px;
+    }
+
+    .input-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    li {
+        align-items: flex-start;
+    }
+    
+    li div {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .authors-container {
+        gap: 30px;
+    }
+
+    .author-photo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .author-info {
+        font-size: 0.8rem;
+    }
+}
